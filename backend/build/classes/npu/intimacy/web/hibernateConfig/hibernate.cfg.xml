@@ -1,0 +1,13 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+<!-- 对entity进行配置  -->
+	<session-factory>
+	<!-- class是点 ，resource是斜杠-->
+		<mapping class="npu.intimacy.web.entity.User"/> 
+		<mapping class="npu.intimacy.web.entity.Contact"/>
+		<mapping class="npu.intimacy.web.entity.Location"/>
+	</session-factory>
+</hibernate-configuration> 

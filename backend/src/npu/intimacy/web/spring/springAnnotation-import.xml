@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd" [
+<!ENTITY contextInclude SYSTEM "org/springframework/web/context/WEB-INF/contextInclude.xml">
+]>
+
+<beans>
+	<bean id="userDao" class="npu.intimacy.web.dao.UserDAOImp">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="userManagerBase" class="npu.intimacy.web.service.UserManagerImp">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean id="userManager" parent="transactionBase">
+		<property name="target" ref="userManagerBase"></property>
+	</bean>
+</beans>

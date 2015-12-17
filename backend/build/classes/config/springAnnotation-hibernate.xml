@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd" [
+<!ENTITY contextInclude SYSTEM "org/springframework/web/context/WEB-INF/contextInclude.xml">
+]>
+
+<beans>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/softwareengineer?useUnicode=true&amp;characterEncodeing=utf-8"/>		<property name="username" value="root"/>
+		<property name="password" value="0000"></property>
+	</bean>
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="hibernateProperties">
+			<props>
+			<!-- 方言 -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			<!-- 只要对象改动就同步底层数据库  -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hiberante.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="configLocations">
+			<list>
+				<value>
+					classpath*:npu/intimacy/web/hibernateConfig/hibernate.cfg.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 事务描述 -->
+	<bean id="transactionBase"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		lazy-init="true" abstract="true">
+		<property name="transactionManager" ref="transactionManager"></property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key=" save* "> PROPAGATION_REQUIRED </prop>
+				<prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="modify*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key=" merge* "> PROPAGATION_REQUIRED </prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="get*">PROPAGATION_NEVER</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

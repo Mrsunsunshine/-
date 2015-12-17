@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+      http://www.springframework.org/schema/context  
+      http://www.springframework.org/schema/context/spring-context.xsd  
+      http://www.springframework.org/schema/mvc 
+      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+      <!--处理对静态资源的请求  -->
+     <mvc:resources location="/css/" mapping="/css/**"/>
+	 <mvc:resources location="/js/" mapping="/js/**"/>
+	 <mvc:resources location="/WEB-INF/img/" mapping="/img/**"/>
+	 <!--  提供注解驱动特性 --> 
+     <mvc:annotation-driven/>
+	 <context:component-scan base-package="npu.intimacy.web"></context:component-scan>
+	 <!-- 配置json视图 -->
+	
+	 <!-- <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+       <property name="supportedMediaTypes">
+           <list>
+               <value>application/json;charset=UTF-8</value>
+           </list>
+       </property>     
+      <property name="objectMapper">
+           <bean class="org.codehaus.jackson.map.ObjectMapper">
+               <property name="dateFormat">
+                   <bean class="java.text.SimpleDateFormat">
+                       <constructor-arg index="0" type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+                   </bean>
+               </property>
+           </bean>
+       </property> 
+     </bean>
+     <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter"/>
+     <bean id="requestMappingHandlerAdapter" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+       <property name="messageConverters">
+           <list>
+               <ref bean="mappingJacksonHttpMessageConverter"/>
+               <ref bean="stringHttpMessageConverter"/>
+           </list>
+       </property>
+     </bean> -->
+     
+     
+     
+     <!--配置json-->
+     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html; charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html; charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean> 
+
+	 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	 	<property name="defaultEncoding" value="utf-8"/>
+	 	<property name="maxUploadSize" value="10485760000"/>
+	 	<property name="maxInMemorySize" value="40960"/>
+	 </bean>
+	 
+	 <!-- 视图解析器，这里使用的是jsp -->
+	 <bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/"></property>
+		<property name="suffix" value=".jsp"></property>
+	 </bean> 
+</beans>  
